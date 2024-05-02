@@ -2,7 +2,7 @@ from src.lib.api_resource import url
 from tests.helpers.message_bus_test import AsyncDryRunMessageBus
 
 
-def test_api_info(api_factory_async_fx):
+def test_async_api(api_factory_async_fx):
     message_bus = AsyncDryRunMessageBus(
         event_handlers={}
     )

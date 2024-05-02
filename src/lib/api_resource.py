@@ -5,7 +5,7 @@ import venusian
 PREFIX = "/api/v1"
 
 
-def url(url_: Optional[str] = None) -> str:
+def url(url_: Optional[str] = None, prefix=PREFIX) -> str:
     if url_ is None:
         return PREFIX
     else:
