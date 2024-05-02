@@ -1,6 +1,6 @@
 from typing import Type
 from config import Config
-from message_bus.message_bus import MessageBus
+from message_bus import MessageBus
 from src.modules.sync_api_module.mb_events.events import events as sync_api_module_events
 from src.modules.core.models.meta import session_factory
 

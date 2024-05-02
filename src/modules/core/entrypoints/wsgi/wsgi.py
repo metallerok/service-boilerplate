@@ -37,7 +37,7 @@ from src.modules.core.entrypoints.wsgi.errors.base import (
 
 from sqlalchemy.exc import NoResultFound
 from marshmallow import ValidationError
-from message_bus.message_bus import MessageBusABC
+from message_bus import MessageBusABC
 import venusian
 
 

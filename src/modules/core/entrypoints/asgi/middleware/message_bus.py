@@ -1,4 +1,4 @@
-from message_bus.message_bus import MessageBusABC
+from message_bus import MessageBusABC
 
 
 class MessageBudsMiddleware:

@@ -1,7 +1,7 @@
 import json
 from src.modules.core.entrypoints.wsgi.api.v1 import api_resource
 from src.modules.sync_api_module.mb_events import events
-from message_bus.message_bus import MessageBusABC
+from message_bus import MessageBusABC
 
 
 @api_resource("/sync-api")

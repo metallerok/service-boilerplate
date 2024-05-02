@@ -10,7 +10,7 @@ requires-python = '>=3.8'
 dependencies = [
     "redis_helper @ git+https://github.com/metallerok/redis-helper@v0.0.1",
     "falcon_cache @ git+https://github.com/metallerok/falcon-cache@v0.2.0",
-    "message_bus @ git+https://github.com/metallerok/message_bus@v1.0.0",
+    "message_bus @ git+https://github.com/metallerok/message_bus@v1.2.0",
     "venusian==3.1.0",
     "SQLAlchemy==2.0.29",
     "alembic==1.13.1",

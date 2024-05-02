@@ -8,7 +8,7 @@ import redis
 from typing import Type, Optional
 
 from config import Config
-from message_bus.message_bus import MessageBusABC
+from message_bus import MessageBusABC
 
 from src.modules.core.entrypoints.asgi.middleware import (
     DatabaseMiddleware,
@@ -34,7 +34,7 @@ from src.modules.async_api_module.entrypoints.asgi import api as async_api_modul
 from src import app_globals
 from falcon_cache.cache import APICache
 
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import NoResultFound
 from marshmallow import ValidationError
 
 
@@ -47,7 +47,7 @@ class AppLogFilter(logging.Filter):
 
 def make_app(
         config: Type[Config] = Config,
-        message_bus: Optional[MessageBusABC] = None,
+        message_bus: Optional['MessageBusABC'] = None,
 ) -> falcon.asgi.App:
     _init_environment(config)
     redis_ = _make_redis_conn(config)

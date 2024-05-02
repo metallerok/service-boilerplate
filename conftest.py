@@ -10,7 +10,7 @@ from config import TestConfig
 from src.modules.core.entrypoints.wsgi.wsgi import make_app
 from src.modules.core.entrypoints.asgi.asgi import make_app as make_async_app
 from src import app_globals
-from message_bus.message_bus import MessageBusABC
+from message_bus import MessageBusABC
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from tests.helpers.headers import Headers
 
