@@ -25,7 +25,7 @@ from falcon_cache.middleware import CacheMiddleware
 from falcon_cache.cache import APICache
 
 from src.modules.core.entrypoints.wsgi import api as core_api
-from src.modules.hello_world.entrypoints.wsgi import api as hello_world_api
+from src.modules.sync_api_module.entrypoints.wsgi import api as hello_world_api
 
 from src.modules.core.models.meta import session_factory
 
