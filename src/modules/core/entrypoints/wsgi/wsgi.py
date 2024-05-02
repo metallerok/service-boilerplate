@@ -13,7 +13,7 @@ from src.modules.core.entrypoints.wsgi.middleware import (
     EncodeMiddleware,
     LoggingMiddleware,
     RedisMiddleware,
-    MessageBusMiddleware,
+    # MessageBusMiddleware,
     ConfigMiddleware,
     # AuthMiddleware, DoesNotAuthMiddleware,
     # DepotMiddleware,

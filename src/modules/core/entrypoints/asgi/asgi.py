@@ -3,6 +3,7 @@ import falcon
 import falcon.asgi
 import venusian
 import logging
+import redis
 
 from typing import Type, Optional
 
@@ -30,6 +31,9 @@ from src.modules.core.entrypoints.wsgi.errors.base import (
 from src.modules.core.entrypoints.asgi import api as core_api
 from src.modules.async_api_module.entrypoints.asgi import api as async_api_module
 
+from src import app_globals
+from falcon_cache.cache import APICache
+
 from sqlalchemy.orm.exc import NoResultFound
 from marshmallow import ValidationError
 
@@ -46,6 +50,7 @@ def make_app(
         message_bus: Optional[MessageBusABC] = None,
 ) -> falcon.asgi.App:
     _init_environment(config)
+    redis_ = _make_redis_conn(config)
 
     if not message_bus:
         # message_bus = make_message_bus(config)
@@ -53,6 +58,8 @@ def make_app(
 
     db_sessionmaker, db_engine = async_session_factory(config)
     Base.metadata.bind = db_engine
+
+    app_globals.api_cache = APICache(redis_)
 
     middlewares = [
         ConfigMiddleware(config),
@@ -108,3 +115,16 @@ def _init_environment(config: Type[Config]):
     logger.setLevel(config.log_level)
 
     # venusian.Scanner().scan(models)
+
+
+def _make_redis_conn(config: Type[Config]) -> redis.Redis:
+    redis_conn_poll = redis.ConnectionPool(
+        host=config.redis_host,
+        port=config.redis_port,
+        db=config.redis_db,
+        password=config.redis_password,
+        socket_connect_timeout=10,
+    )
+    redis_conn = redis.StrictRedis(connection_pool=redis_conn_poll)
+
+    return redis_conn
