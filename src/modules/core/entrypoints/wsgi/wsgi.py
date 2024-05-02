@@ -13,7 +13,7 @@ from src.modules.core.entrypoints.wsgi.middleware import (
     EncodeMiddleware,
     LoggingMiddleware,
     RedisMiddleware,
-    # MessageBusMiddleware,
+    MessageBusMiddleware,
     ConfigMiddleware,
     # AuthMiddleware, DoesNotAuthMiddleware,
     # DepotMiddleware,
@@ -28,6 +28,7 @@ from src.modules.core.entrypoints.wsgi import api as core_api
 from src.modules.sync_api_module.entrypoints.wsgi import api as hello_world_api
 
 from src.modules.core.models.meta import session_factory
+from src.modules.core.mb_events.factory import make_message_bus
 
 from src.modules.core.entrypoints.wsgi.errors.base import (
     validation_error_handler,
@@ -62,9 +63,7 @@ def make_app(
     redis_ = _make_redis_conn(config)
 
     if not message_bus:
-        # todo: provide factory call here
-        # message_bus = make_message_bus(config)
-        pass
+        message_bus = make_message_bus(config)
 
     middlewares = []
 
@@ -85,7 +84,7 @@ def make_app(
         EncodeMiddleware(),
         LoggingMiddleware(config),
         SADBSessionMiddleware(db_session),
-        # MessageBusMiddleware(message_bus),
+        MessageBusMiddleware(message_bus),
         # DoesNotAuthMiddleware(),
     ])
 
