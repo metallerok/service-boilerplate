@@ -25,6 +25,7 @@ from falcon_cache.middleware import CacheMiddleware
 from falcon_cache.cache import APICache
 
 from src.modules.core.entrypoints.wsgi import api as core_api
+from src.modules.hello_world.entrypoints.wsgi import api as hello_world_api
 
 from src.modules.core.models.meta import session_factory
 
@@ -100,6 +101,7 @@ def make_app(
 
     # Provide api scan here
     venusian.Scanner(api=app).scan(core_api)
+    venusian.Scanner(api=app).scan(hello_world_api)
 
     os.environ['PYTHON_EGG_CACHE'] = os.path.dirname(os.path.abspath(__file__)) + '/.cache'
 

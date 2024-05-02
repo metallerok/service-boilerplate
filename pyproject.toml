@@ -24,9 +24,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
-    "redis",
-]
+dev = []
 
 [tool.pyright]
 venv = ".venv"
