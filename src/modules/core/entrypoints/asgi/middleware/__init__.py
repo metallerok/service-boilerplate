@@ -3,3 +3,4 @@ from src.modules.core.entrypoints.asgi.middleware.config_middleware import Confi
 from src.modules.core.entrypoints.asgi.middleware.database import DatabaseMiddleware  # noqa
 from src.modules.core.entrypoints.asgi.middleware.encode import EncodeMiddleware  # noqa
 from src.modules.core.entrypoints.asgi.middleware.message_bus import MessageBudsMiddleware  # noqa
+from src.modules.core.entrypoints.asgi.middleware.logging import LoggingMiddleware  # noqa

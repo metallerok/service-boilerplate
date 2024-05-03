@@ -16,6 +16,7 @@ from src.modules.core.entrypoints.asgi.middleware import (
     EncodeMiddleware,
     # AuthMiddleware,
     MessageBudsMiddleware,
+    LoggingMiddleware,
 )
 from src.modules.core.entrypoints.wsgi.middleware import (
     CORSMiddleware
@@ -30,6 +31,7 @@ from src.modules.core.entrypoints.wsgi.errors.base import (
 )
 from src.modules.core.entrypoints.asgi import api as core_api
 from src.modules.async_api_module.entrypoints.asgi import api as async_api_module
+from src.modules.core.mb_events.factory import make_async_message_bus
 
 from src import app_globals
 from falcon_cache.cache import APICache
@@ -53,8 +55,7 @@ def make_app(
     redis_ = _make_redis_conn(config)
 
     if not message_bus:
-        # message_bus = make_message_bus(config)
-        pass
+        message_bus = make_async_message_bus(config)
 
     db_sessionmaker, db_engine = async_session_factory(config)
     Base.metadata.bind = db_engine
@@ -67,6 +68,7 @@ def make_app(
         MessageBudsMiddleware(message_bus),
         # AuthMiddleware(config),
         EncodeMiddleware(),
+        LoggingMiddleware(config=config)
     ]
 
     if config.is_cors_enable:

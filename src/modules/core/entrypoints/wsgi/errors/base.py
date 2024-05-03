@@ -33,7 +33,7 @@ async def async_no_result_found_handler(req, resp, ex, params, ws=None):
 
 async def async_base_exception(req, resp, ex, params, ws=None):
     logger.exception(ex)
-    raise HTTP_500
+    raise HTTPInternalServerError
 
 
 class BaseHTTPError(HTTPError):

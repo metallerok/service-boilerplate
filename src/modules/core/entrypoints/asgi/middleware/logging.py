@@ -12,6 +12,7 @@ from config import Config
 def save_log(path, filename, message):
     dir_path = Path(path)
     file_path = str(dir_path) + "/" + filename
+    print(file_path)
     try:
         dir_path.mkdir()
         with open(file_path, "a+") as log:
@@ -25,12 +26,12 @@ class LoggingMiddleware:
     def __init__(self, config: Type[Config]):
         self._config = config
 
-    def process_request(self, req, _):
+    async def process_request(self, req, _):
         request_id = str(uuid4())
         req.context.request_id = request_id
         req.context.dt_start = dt.datetime.utcnow()
 
-    def process_response(self, req: 'falcon.Request', resp: 'falcon.Response', resource, is_success):
+    async def process_response(self, req: 'falcon.Request', resp: 'falcon.Response', resource, is_success):
         request_id = req.context.get("request_id")
         dt_start = req.context.get("dt_start")
         if dt_start:
