@@ -1,0 +1,99 @@
+services:
+  boilerplate-nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - type: 'bind'
+        source: ./nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+      - type: 'bind'
+        source: ./nginx/ssl
+        target: /ssl
+    networks:
+      - boilerplate-net
+    ports:
+      - "8080:80"
+      - "4433:443"
+  boilerplate-postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - type: 'volume'
+        source: boilerplate-postgres-data
+        target: /var/lib/postgresql/data/
+    ports:
+      - "1111:5432"
+    networks:
+      - boilerplate-net
+    environment:
+      POSTGRES_DB: boilerplate
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+  boilerplate-test-postgres:
+    image: postgres
+    restart: always
+    networks:
+      - boilerplate-net
+    environment:
+      POSTGRES_DB: test_boilerplate
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+  boilerplate-rabbitmq:
+    image: rabbitmq:3.11
+    restart: always
+    networks:
+      - boilerplate-net
+    environment:
+      RABBITMQ_DEFAULT_VHOST: my_vhost
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+  boilerplate-web:
+    image: boilerplate/web
+    restart: always
+    depends_on:
+      - boilerplate-postgres
+      - boilerplate-test-postgres
+      - boilerplate-rabbitmq
+      - boilerplate-nginx
+    volumes:
+      - type: 'bind'
+        source: ../
+        target: /opt/app/backend
+      - type: 'volume'
+        source: boilerplate-web-logs
+        target: /var/lib/boilerplate/web_logs/
+    environment:
+      ASYNC_POSTGRES_DB_URI: postgresql+asyncpg://db_user:db_password@boilerplate-postgres:5432/boilerplate
+      POSTGRES_DB_URI: postgresql://db_user:db_password@boilerplate-postgres:5432/boilerplate
+      TEST_POSTGRES_DB_URI: postgresql://db_user:db_password@boilerplate-test-postgres:5432/test_boilerplate
+      TEST_ASYNC_POSTGRES_DB_URI: postgresql+asyncpg://db_user:db_password@boilerplate-test-postgres:5432/test_boilerplate
+      APP_WEB_LOG_ENABLED: true
+      APP_WEB_LOG_DIR: boilerplate-web-logs
+      CELERY_BROKER: pyamqp://user:password@boilerplate-rabbitmq/my_vhost
+    networks:
+      - boilerplate-net
+    ports:
+      - "8000:8000"
+  # boilerplate-celery:
+  #   image: boilerplate-celery
+  #   restart: always
+  #   depends_on:
+  #     - boilerplate-postgres
+  #     - boilerplate-rabbitmq
+  #   volumes:
+  #     - type: 'bind'
+  #       source: ../src
+  #       target: /opt/app/backend/src
+  #   environment:
+  #     POSTGRES_DB_URI: postgresql://db_user:db_password@boilerplate-postgres:5432/boilerplate
+  #     TEST_POSTGRES_DB_URI: postgresql://db_user:db_password@boilerplate-test-postgres:5432/test_boilerplate
+  #     CELERY_BROKER: pyamqp://user:password@boilerplate-rabbitmq/my_vhost
+  #   networks:
+  #     - boilerplate-net
+
+networks:
+  boilerplate-net:
+
+volumes:
+  boilerplate-postgres-data:
+  boilerplate-web-logs:
