@@ -3,11 +3,11 @@ from dataclasses import dataclass
 
 
 @dataclass
-class SyncRequestProcessed(Event):
+class AsyncRequestProcessed(Event):
     id: str
     text: str
 
 
 events_handlers = {
-    SyncRequestProcessed: []
+    AsyncRequestProcessed: []
 }
