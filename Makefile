@@ -32,7 +32,7 @@ migration:
 	$(PYTHON) -m alembic revision --autogenerate -m $(name)
 
 docker_build:
-	docker build -t $(CONTAINER_NAME) -f docker/web/Dockerfile .
+	docker build -t $(CONTAINER_NAME) -f docker/web/Dockerfile . --prograss=plain
 
 docker_up:
 	docker compose -f docker/docker-compose.dev.yml up
