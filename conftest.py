@@ -9,7 +9,6 @@ from src.modules.core import models
 from config import TestConfig
 from src.modules.core.entrypoints.wsgi.wsgi import make_app
 from src.modules.core.entrypoints.asgi.asgi import make_app as make_async_app
-from src import app_globals
 from message_bus import MessageBusABC
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from tests.helpers.headers import Headers
@@ -113,13 +112,12 @@ def api_factory_async_(
     #     DepotManager._depots = {}
 
     app = make_async_app(config, message_bus)
-    app_globals.api_cache.enabled = False
     client = testing.TestClient(app)
 
     return client
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def api_fx(db_engine_fx):
     # setup
 
@@ -128,9 +126,9 @@ def api_fx(db_engine_fx):
     # teardown
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def api_factory_fx(db_engine_fx):
-    return api_factory_
+    yield api_factory_
 
 
 def api_factory_(
@@ -145,7 +143,6 @@ def api_factory_(
     #     DepotManager._depots = {}
 
     app = make_app(config, message_bus)
-    app_globals.api_cache.enabled = False
     client = testing.TestClient(app)
 
     return client
