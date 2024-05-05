@@ -1,11 +1,10 @@
-import venusian
 from logging.config import fileConfig
 
 from alembic import context
 from config import Config as AppConfig
 
-from src.modules.core import models
 from src.modules.core.models.meta import Base
+from src.lib.models_scanner import scan_models
 from sqlalchemy.engine import create_engine
 
 # this is the Alembic Config object, which provides
@@ -25,8 +24,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-venusian.Scanner().scan(models)
-
+scan_models()
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.

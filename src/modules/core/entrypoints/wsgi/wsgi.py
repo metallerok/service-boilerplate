@@ -24,6 +24,7 @@ from falcon_cache.middleware import CacheMiddleware
 from falcon_cache.cache import APICache
 
 
+from src.lib.models_scanner import scan_models
 from src.modules.core.models.meta import session_factory
 from src.modules.core.mb_events.factory import make_message_bus
 
@@ -93,7 +94,7 @@ def make_app(
     app.add_error_handler(NoResultFound, no_result_found_handler)
 
     # todo: add models scan from moduels here
-    # venusian.Scanner().scan(models)
+    scan_models()
 
     # Provide api scan here
     from src.modules.core.entrypoints.wsgi import api as core_api

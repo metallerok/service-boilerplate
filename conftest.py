@@ -4,9 +4,9 @@ import redis
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.modules.core.models.meta import Base
-from src.modules.core import models
 # from src.lib.hashing import TokenEncoder
 from config import TestConfig
+from src.lib.models_scanner import scan_models
 from src.modules.core.entrypoints.wsgi.wsgi import make_app
 from src.modules.core.entrypoints.asgi.asgi import make_app as make_async_app
 from message_bus import MessageBusABC
@@ -16,14 +16,13 @@ from tests.helpers.headers import Headers
 # from depot.manager import DepotManager
 from falcon import testing
 # from uuid import uuid4
-import venusian
 
 
-@pytest_asyncio.fixture(scope="module")
+@pytest_asyncio.fixture()
 async def async_db_engine_fx():
     engine = create_async_engine(TestConfig.async_db_uri)
 
-    venusian.Scanner().scan(models)
+    scan_models()
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
@@ -35,7 +34,7 @@ async def async_db_engine_fx():
     await engine.dispose()
 
 
-@pytest_asyncio.fixture(scope="module")
+@pytest_asyncio.fixture()
 async def async_db_session_fx(async_db_engine_fx):
     engine = async_db_engine_fx
 
@@ -50,7 +49,7 @@ async def async_db_session_fx(async_db_engine_fx):
 
 @pytest.fixture(scope="module")
 def db_engine_fx():
-    venusian.Scanner().scan(models)
+    scan_models()
     engine = create_engine(TestConfig.db_uri)
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)

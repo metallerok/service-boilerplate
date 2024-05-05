@@ -22,6 +22,7 @@ from src.modules.core.entrypoints.wsgi.middleware import (
     CORSMiddleware
 )
 
+from src.lib.models_scanner import scan_models
 from src.modules.core.models.meta import async_session_factory, Base
 
 from src.modules.core.entrypoints.wsgi.errors.base import (
@@ -87,6 +88,8 @@ def make_app(
     venusian.Scanner(api=app).scan(core_api)
     venusian.Scanner(api=app).scan(async_api_module)
 
+    scan_models()
+
     os.environ['PYTHON_EGG_CACHE'] = os.path.dirname(os.path.abspath(__file__)) + '/.cache'
 
     # mgr = socketio.AsyncRedisManager(
@@ -115,8 +118,6 @@ def _init_environment(config: Type[Config]):
     logger = logging.getLogger(__name__)
     logger.format = logging.Formatter(config.logger_format)
     logger.setLevel(config.log_level)
-
-    # venusian.Scanner().scan(models)
 
 
 def _make_redis_conn(config: Type[Config]) -> redis.Redis:
