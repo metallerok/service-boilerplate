@@ -31,18 +31,6 @@ services:
       POSTGRES_DB: boilerplate
       POSTGRES_USER: db_user
       POSTGRES_PASSWORD: db_password
-  test-postgres:
-    image: postgres
-    container_name: boilerplate-test-postgres
-    restart: always
-    networks:
-      - boilerplate-net
-    environment:
-      POSTGRES_DB: test_boilerplate
-      POSTGRES_USER: db_user
-      POSTGRES_PASSWORD: db_password
-    ports:
-      - "1112:5432"
   rabbitmq:
     image: rabbitmq:3.11
     container_name: boilerplate-rabbitmq

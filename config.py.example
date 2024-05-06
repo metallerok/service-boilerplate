@@ -37,10 +37,6 @@ class Config:
 
 
 class TestConfig(Config):
-    db_uri = os.environ.get('TEST_POSTGRES_DB_URI') \
-        or "postgresql://db_user:db_password@localhost:1112/test_boilerplate"
-    async_db_uri = os.environ.get('TEST_ASYNC_POSTGRES_DB_URI') \
-        or "postgresql+asyncpg://db_user:db_password@localhost:1112/test_boilerplate"
     is_cache_enabled: bool = bool(os.environ.get('IS_TEST_CACHE_ENABLED')) or False
     jwt_secret = "jwt_secret"
     redis_db = os.environ.get('REDIS_DB') or "0"

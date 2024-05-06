@@ -1,6 +1,7 @@
 import pytest_asyncio
 import pytest
 import redis
+from testcontainers.postgres import PostgresContainer
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.modules.core.models.meta import Base
@@ -18,8 +19,20 @@ from falcon import testing
 # from uuid import uuid4
 
 
+@pytest.fixture(scope="session")
+def postgres_fx():
+    with PostgresContainer("postgres:16", username="test", password="test", dbname="test") as postgres:
+        pg_url = postgres.get_connection_url()
+        async_pg_url = pg_url.replace("postgresql+psycopg2", "postgresql+asyncpg")
+
+        TestConfig.db_uri = pg_url
+        TestConfig.async_db_uri = async_pg_url
+
+        yield pg_url
+
+
 @pytest_asyncio.fixture()
-async def async_db_engine_fx():
+async def async_db_engine_fx(postgres_fx):
     engine = create_async_engine(TestConfig.async_db_uri)
 
     scan_models()
@@ -48,7 +61,7 @@ async def async_db_session_fx(async_db_engine_fx):
 
 
 @pytest.fixture(scope="module")
-def db_engine_fx():
+def db_engine_fx(postgres_fx):
     scan_models()
     engine = create_engine(TestConfig.db_uri)
     Base.metadata.drop_all(bind=engine)
