@@ -1,4 +1,4 @@
-from tests.helpers.message_bus_test import DryRunMessageBus
+from src.modules.core.tests.helpers.message_bus import DryRunMessageBus
 from src.lib.api_resource import url
 
 from src.modules.sync_api_module.mb_events import events

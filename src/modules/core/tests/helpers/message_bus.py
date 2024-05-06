@@ -1,12 +1,14 @@
+import logging
 from typing import List, Dict, Union, Callable, Type
 from message_bus import MessageBusABC
-from message_bus.types import (
-    events,
-    commands,
-    Message,
-)
+from message_bus.types import Message
+from message_bus import events, commands
 from message_bus.event_handlers.base import EventHandlerABC
 from message_bus.command_handlers.base import CommandHandlerABC
+from message_bus.repositories.outbox import OutBoxRepoABC
+
+
+logger = logging.getLogger(__name__)
 
 
 class DryRunMessageBus(MessageBusABC):
@@ -17,6 +19,7 @@ class DryRunMessageBus(MessageBusABC):
         command_handlers: Dict[Type[commands.Command], Union[Callable, CommandHandlerABC]] = None,
     ):
         self.messages = []
+        self.called_outbox_handlers = []
 
         if event_handlers:
             self._event_handlers = event_handlers
@@ -27,6 +30,8 @@ class DryRunMessageBus(MessageBusABC):
             self._command_handlers = command_handlers
         else:
             self._command_handlers = dict()
+
+        super().__init__()
 
     def set_event_handlers(self, event: Type[events.Event], handlers: List[Union[Callable, EventHandlerABC]]):
         self._event_handlers[event] = handlers
@@ -73,6 +78,16 @@ class DryRunMessageBus(MessageBusABC):
         message_desc["handlers"] = handlers
         self.messages.append(message_desc)
 
+    def process_outbox(self, outbox_repo: OutBoxRepoABC):
+        if len(self._outbox_handlers) == 0:
+            return
+
+        outbox_messages = outbox_repo.list_unprocessed()
+
+        for outbox_message in outbox_messages:
+            for handler in self._outbox_handlers:
+                self.called_outbox_handlers.append(type(handler))
+
 
 class AsyncDryRunMessageBus(DryRunMessageBus):
     async def handle(self, message: Message, *args, **kwargs):
@@ -81,3 +96,13 @@ class AsyncDryRunMessageBus(DryRunMessageBus):
     async def batch_handle(self, messages: List[Message], *args, **kwargs):
         for message in messages:
             await self.handle(message, *kwargs, **kwargs)
+
+    async def process_outbox(self, outbox_repo: OutBoxRepoABC):
+        if len(self._outbox_handlers) == 0:
+            return
+
+        outbox_messages = await outbox_repo.list_unprocessed()
+
+        for outbox_message in outbox_messages:
+            for handler in self._outbox_handlers:
+                self.called_outbox_handlers.append(type(handler))

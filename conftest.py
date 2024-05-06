@@ -11,7 +11,7 @@ from src.modules.core.entrypoints.wsgi.wsgi import make_app
 from src.modules.core.entrypoints.asgi.asgi import make_app as make_async_app
 from message_bus import MessageBusABC
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from tests.helpers.headers import Headers
+from src.modules.core.tests.helpers.headers import Headers
 
 # from depot.manager import DepotManager
 from falcon import testing

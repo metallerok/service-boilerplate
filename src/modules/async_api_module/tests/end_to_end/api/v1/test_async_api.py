@@ -1,5 +1,5 @@
 from src.lib.api_resource import url
-from tests.helpers.message_bus_test import AsyncDryRunMessageBus
+from src.modules.core.tests.helpers.message_bus import AsyncDryRunMessageBus
 from src.modules.async_api_module.mb_events import events
 
 
