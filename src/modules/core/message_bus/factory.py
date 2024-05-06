@@ -5,8 +5,8 @@ from config import Config
 from message_bus import MessageBus, AsyncMessageBus
 from src.modules.core.models.meta import session_factory, async_session_factory
 
-from src.modules.sync_api_module.mb_events.events import events_handlers as sync_api_module_events_handlers
-from src.modules.async_api_module.mb_events.events import events_handlers as async_api_module_events_handlers
+from src.modules.sync_api_module.message_bus.events import events_handlers as sync_api_module_events_handlers
+from src.modules.async_api_module.message_bus.events import events_handlers as async_api_module_events_handlers
 
 
 def make_message_bus(config: Type[Config]) -> MessageBusABC:

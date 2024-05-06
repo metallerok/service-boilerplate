@@ -1,6 +1,6 @@
 from src.lib.api_resource import url
 from src.modules.core.tests.helpers.message_bus import AsyncDryRunMessageBus
-from src.modules.async_api_module.mb_events import events
+from src.modules.async_api_module.message_bus import events
 
 
 def test_async_api(api_factory_async_fx):

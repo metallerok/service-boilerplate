@@ -26,7 +26,7 @@ from falcon_cache.cache import APICache
 
 from src.lib.models_scanner import scan_models
 from src.modules.core.models.meta import session_factory
-from src.modules.core.mb_events.factory import make_message_bus
+from src.modules.core.message_bus.factory import make_message_bus
 
 from src.modules.core.entrypoints.wsgi.errors.base import (
     validation_error_handler,

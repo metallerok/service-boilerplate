@@ -1,7 +1,7 @@
 from src.modules.core.tests.helpers.message_bus import DryRunMessageBus
 from src.lib.api_resource import url
 
-from src.modules.sync_api_module.mb_events import events
+from src.modules.sync_api_module.message_bus import events
 
 
 def test_sync_api(api_factory_fx):

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'service-boilerplate'
-version = "0.2.0"
+version = "0.3.0"
 requires-python = '>=3.8'
 dependencies = [
     "redis_helper @ git+https://github.com/metallerok/redis-helper@v0.0.1",

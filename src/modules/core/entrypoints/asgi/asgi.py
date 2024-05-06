@@ -32,7 +32,7 @@ from src.modules.core.entrypoints.wsgi.errors.base import (
 )
 from src.modules.core.entrypoints.asgi import api as core_api
 from src.modules.async_api_module.entrypoints.asgi import api as async_api_module
-from src.modules.core.mb_events.factory import make_async_message_bus
+from src.modules.core.message_bus.factory import make_async_message_bus
 
 from src import app_globals
 from falcon_cache.cache import APICache

@@ -1,7 +1,7 @@
 import json
 import random
 from src.modules.core.entrypoints.wsgi.api.v1 import api_resource
-from src.modules.sync_api_module.mb_events import events
+from src.modules.sync_api_module.message_bus import events
 from message_bus import MessageBusABC
 from src.app_globals import api_cache
 

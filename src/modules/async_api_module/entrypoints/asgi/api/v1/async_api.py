@@ -1,6 +1,6 @@
 import json
 from src.modules.core.entrypoints.asgi.api.v1 import api_resource
-from src.modules.async_api_module.mb_events import events
+from src.modules.async_api_module.message_bus import events
 from message_bus import AsyncMessageBus
 
 
