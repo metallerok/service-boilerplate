@@ -16,10 +16,10 @@ install_dev:
 test:
 	$(PYTHON) -m pytest -x -s -v
 
-run_web:
-	$(PYTHON) -m gunicorn -c gunicorn.conf.py 'src.modules.core.entrypoints.wsgi.wsgi:make_app()'
+# run_web:
+# 	$(PYTHON) -m gunicorn -c gunicorn.conf.py 'src.modules.core.entrypoints.wsgi.wsgi:make_app()'
 
-run_async_web:
+run_web:
 	$(PYTHON) -m uvicorn --reload --factory 'src.modules.core.entrypoints.asgi.asgi:make_app' --port $(async_port) --host $(async_host)
 
 migrate_up:

@@ -28,7 +28,11 @@ make test
 ```
 
 # Разработка модуля
-Модули добавляются в `src.modules.{module_name}`. API эндпоинты добавленные в модуль после необходимо подключить в `src.modules.core.entrypoints.wsgi.wsgi.py` для синхронного API или в `src.modules.core.entrypoints.asgi.asgi.py` для асинхронного API.
+Модули добавляются в `src.modules.{module_name}`. Примеры модулей можно посмотреть в `src.modules.async_api_module` и  `src.modules.sync_api_module`.
+
+
+API эндпоинты добавленные в модуль после необходимо подключить в `src.modules.core.entrypoints.wsgi.wsgi.py` для синхронного API или в `src.modules.core.entrypoints.asgi.asgi.py` для асинхронного API.
+В зависимости от выбранного стиля разработки, асинхронного или синхронного, потребуется запуск нужного веб сервера, по-умолчанию `make run_web` запускает асинхронный веб сервер
 
 Модели модуля нужно зарегистрировать в `src.lib.models_scanner`
 
